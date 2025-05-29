@@ -14,6 +14,7 @@ namespace AddressBookRepository.Repository
         Task<T>AddAsync(T item);
         Task UpdateAsync(T item);
         Task DeleteAsync(TKey Id);
+        Task<T?> Get(Expression<Func<T, bool>> filter);
 
     }
 }

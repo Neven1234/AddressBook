@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace AddressBookRepository.Repository
 {
-    public class GenaricRepository<T, TKey> : IGenericRepository<T, TKey> where T : class
+    public class GenericRepository<T, TKey> : IGenericRepository<T, TKey> where T : class
     {
         private readonly DbContextApp _dbContext;
         private readonly DbSet<T> entity;
 
-        public GenaricRepository(DbContextApp dbContext)
+        public GenericRepository(DbContextApp dbContext)
         {
             _dbContext = dbContext;
             entity = _dbContext.Set<T>();
@@ -29,10 +29,12 @@ namespace AddressBookRepository.Repository
         public async Task DeleteAsync(TKey Id)
         {
             var deletedEntity = await entity.FindAsync(Id);
-            if (deletedEntity != null) { 
-                _dbContext.Remove(deletedEntity);
-                await saveAsync();
-            }
+            if (entity == null)
+                throw new Exception("Entity not found");
+           
+            entity.Remove(deletedEntity);
+            await saveAsync();
+            
         }
 
         public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter = null)
@@ -56,6 +58,10 @@ namespace AddressBookRepository.Repository
         private async Task saveAsync()
         {
             await _dbContext.SaveChangesAsync();
+        }
+        public async Task<T?> Get(Expression<Func<T, bool>> filter)
+        {
+            return await entity.FirstOrDefaultAsync(filter);
         }
     }
 }

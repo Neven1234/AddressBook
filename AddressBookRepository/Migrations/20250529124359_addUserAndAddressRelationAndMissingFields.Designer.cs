@@ -4,6 +4,7 @@ using AddressBookRepository.DbContextClass;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AddressBookRepository.Migrations
 {
     [DbContext(typeof(DbContextApp))]
-    partial class DbConextAppModelSnapshot : ModelSnapshot
+    [Migration("20250529124359_addUserAndAddressRelationAndMissingFields")]
+    partial class addUserAndAddressRelationAndMissingFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,12 +92,7 @@ namespace AddressBookRepository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("userId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("Department");
                 });
@@ -111,12 +109,7 @@ namespace AddressBookRepository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("userId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("jobTitle");
                 });
@@ -181,35 +174,9 @@ namespace AddressBookRepository.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("Domain.Models.Department", b =>
-                {
-                    b.HasOne("Domain.Models.User", "user")
-                        .WithMany("department")
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("Domain.Models.JobTitle", b =>
-                {
-                    b.HasOne("Domain.Models.User", "user")
-                        .WithMany("jobTitles")
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("Domain.Models.User", b =>
                 {
                     b.Navigation("addressBook");
-
-                    b.Navigation("department");
-
-                    b.Navigation("jobTitles");
                 });
 #pragma warning restore 612, 618
         }

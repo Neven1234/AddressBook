@@ -14,6 +14,26 @@ namespace AddressBookRepository.DbContextClass
         {
             
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Department>()
+                .HasOne(d => d.user)
+                .WithMany(u => u.department)
+                .HasForeignKey(d => d.userId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<JobTitle>()
+                .HasOne(j => j.user)
+                .WithMany(u => u.jobTitles)
+                .HasForeignKey(j => j.userId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            modelBuilder.Entity<AddressBookModel>()
+                .HasOne(a => a.user)
+                .WithMany(u => u.addressBook)
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade); 
+        }
         public DbSet<User> User {  get; set; }
         public DbSet<AddressBookModel> AddressBook {  get; set; }
         public DbSet<JobTitle> jobTitle { get; set; }
