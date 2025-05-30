@@ -26,7 +26,13 @@ namespace AddressBook.Controllers
         {
             try
             {
-                return Ok(await _departmentService.GetAllDepartmentAsync());
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userIdClaim != null)
+                {
+                    long userId = long.Parse(userIdClaim);
+                    return Ok(await _departmentService.GetAllDepartmentAsync(d=>d.userId==userId));
+                }
+                return Unauthorized();
             }
             catch (Exception ex)
             {
@@ -87,7 +93,7 @@ namespace AddressBook.Controllers
                     if (userId == department.userId)
                     {
                         await _departmentService.updateDepartmentAsync(department);
-                        return Ok("Updated successfully");
+                        return Ok(new { message = "Updated successfully" });
                     }
 
                 }
@@ -111,7 +117,7 @@ namespace AddressBook.Controllers
                 {
                     long userId = long.Parse(userIdClaim);
                     await _departmentService.DeleteDepartmentAsync(id, userId);
-                    return Ok("Deleted successfully.");
+                    return Ok(new { message = "Deleted successfully." });
                 }
 
                 return Unauthorized();

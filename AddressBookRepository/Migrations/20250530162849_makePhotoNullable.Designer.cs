@@ -4,6 +4,7 @@ using AddressBookRepository.DbContextClass;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AddressBookRepository.Migrations
 {
     [DbContext(typeof(DbContextApp))]
-    partial class DbConextAppModelSnapshot : ModelSnapshot
+    [Migration("20250530162849_makePhotoNullable")]
+    partial class makePhotoNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

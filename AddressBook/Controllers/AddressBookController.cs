@@ -97,8 +97,14 @@ namespace AddressBook.Controllers
                     long userId = long.Parse(userIdClaim);
                     if(userId==dto.userId)
                     {
-                        await _addressBookService.AddAddressBookAsync(dto);
-                        return Ok("Updated successfully");
+                        if (dto.PhotoFile != null)
+                        {
+
+                            var photoPath = await SavePhotoAsync(dto.PhotoFile);
+                            dto.Photo = photoPath;
+                        }
+                        await _addressBookService.updateAddressBookAsync(dto);
+                        return Ok(new { message = "Updated successfully" });
                     }
                     
                 }
@@ -119,7 +125,7 @@ namespace AddressBook.Controllers
                 {
                     long userId = long.Parse(userIdClaim);
                     await _addressBookService.DeleteAddreasBookAsync(Id,userId);
-                    return Ok("Deleted successfully.");
+                    return Ok(new { message = "Deleted successfully." });
                 }
 
                 return Unauthorized();

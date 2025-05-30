@@ -96,7 +96,7 @@ namespace AddressBook.Controllers
                     if (userId == jobTitle.userId)
                     {
                         await _jobTitleService.updateJobTitleAsync(jobTitle);
-                        return Ok("Updated successfully");
+                        return Ok(new { message = "Updated successfully" });
                     }
 
                 }
@@ -119,7 +119,7 @@ namespace AddressBook.Controllers
                 {
                     long userId = long.Parse(userIdClaim);
                     await _jobTitleService.DeleteJobTitleAsync(id,userId);
-                    return Ok("Deleted successfully.");
+                    return Ok(new { message = "Deleted successfully." });
                 }
 
                 return Unauthorized();

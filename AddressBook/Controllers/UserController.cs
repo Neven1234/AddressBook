@@ -21,7 +21,7 @@ namespace AddressBook.Controllers
             try
             {
                 await _userService.Regist(regist);
-                return Ok("User registered successfully ");
+                return Ok(true);
             }
             catch (Exception ex) { 
                 return BadRequest("Something went wrong "+ex.Message);
@@ -33,7 +33,7 @@ namespace AddressBook.Controllers
             try
             {
                 var token = await _userService.LogIn(logInDto);
-                return Ok(new { Token = token });
+                return    Ok(new { token });
             }
             catch (Exception ex)
             {

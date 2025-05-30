@@ -46,6 +46,16 @@ builder.Services.AddSwaggerGen(C =>
         }
     });
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularClient",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 
 builder.Services.AddDbContext<DbContextApp>(option =>
 {
@@ -87,7 +97,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowAngularClient");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication(); 
